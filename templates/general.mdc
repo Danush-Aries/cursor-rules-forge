@@ -1,0 +1,18 @@
+---
+description: General coding rules — apply to all code in this repo
+globs: **/*
+alwaysApply: true
+---
+
+# General
+
+- Do not add comments that describe what the code does. The code already says that. Comment on WHY, on non-obvious constraints, on links to issues, on gotchas.
+- Delete dead code. Do not leave commented-out blocks "in case we need it later". Git remembers.
+- Prefer the standard library / built-in over adding a dependency. Every dep is a future security patch, a future breaking change, and a future 12MB in node_modules.
+- Small, surgical diffs. Do not reformat unrelated code in the same PR as your feature.
+- One responsibility per function. If you can't name it in 5 words, split it.
+- Names > comments. `is_authenticated_user` beats `# check if user is logged in`.
+- No magic numbers. `if x > 30` should be `if x > MAX_RETRIES`.
+- Do not swallow errors. Log with context, re-raise, or handle explicitly. `except: pass` is a bug.
+- Fail loud in dev, fail safe in prod. Log and alert; don't crash the server on a single bad request.
+- Write the test at the same time as the code, not "after". If it's too hard to test, the design is wrong.

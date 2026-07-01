@@ -1,0 +1,16 @@
+---
+description: Rust idioms and error handling
+globs: **/*.rs
+alwaysApply: false
+---
+
+# Rust
+
+- No `unwrap()` in library code. Return `Result<T, E>` and let the caller decide. `unwrap` is fine in tests and `main` (with `?`).
+- Use `thiserror` for library error types, `anyhow` for application error types. Do not mix.
+- Prefer `&str` in function signatures over `String`. Take ownership only when you need to store it.
+- Iterators over indexes. `for x in &vec` beats `for i in 0..vec.len() { let x = &vec[i]; }`.
+- `clippy` is not optional. Run it in CI with `-D warnings`.
+- Do not `clone()` your way out of a borrow checker fight. Restructure the code.
+- `Box<dyn Trait>` is for owned trait objects; `&dyn Trait` for borrowed. Reach for generics + `impl Trait` first — dynamic dispatch is a real cost.
+- `unsafe` blocks are documented with a `// SAFETY:` comment explaining the invariants. No exceptions.

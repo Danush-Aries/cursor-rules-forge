@@ -1,0 +1,17 @@
+---
+description: Go idioms and error handling
+globs: **/*.go
+alwaysApply: false
+---
+
+# Go
+
+- Handle every error. `_ = err` is a bug. If you truly don't care, comment WHY.
+- Errors are values. Wrap with `fmt.Errorf("context: %w", err)` so `errors.Is`/`errors.As` still works.
+- Small interfaces at the consumer, not the producer. `io.Reader` lives where it's used, not where the concrete type is defined.
+- No `init()` unless you're registering a driver. Init hides startup order and breaks tests.
+- Contexts get passed as the first argument (`ctx context.Context`), never stored in a struct. Cancellation must propagate.
+- `defer` for cleanup. Every `Open`/`Create`/`Begin` gets a matching `defer Close()`.
+- Table-driven tests. `t.Run(tc.name, ...)` gives you per-case failures and easy filtering.
+- Do not use panic for control flow. Panic is for "programmer error", not "user gave bad input".
+- Constants and enums via typed `const` blocks. Not `iota` in an untyped `const`.

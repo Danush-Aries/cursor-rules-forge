@@ -1,0 +1,17 @@
+---
+description: Python style and idioms
+globs: **/*.py
+alwaysApply: false
+---
+
+# Python
+
+- Type-hint public functions. Private helpers can go bare if the types are obvious from context.
+- Prefer stdlib. Reach for a dependency only when stdlib genuinely doesn't cut it (HTTP → `requests`/`httpx`; JSON schema → `pydantic`).
+- Use `pathlib.Path`, not `os.path.join`. Use `subprocess.run(..., check=True)`, not `os.system`.
+- No mutable default arguments. `def f(xs=[])` is the classic bug — use `xs: list | None = None`.
+- Prefer f-strings for formatting. `%` and `.format()` only when you need a template variable at a different time than the values.
+- Context managers for anything with `close()`. Not just files — locks, DB cursors, network clients.
+- Use `dataclass` (or `pydantic` if you need validation) for structured data. Don't pass dicts around as ad-hoc records.
+- Never catch bare `Exception` unless you're re-raising or at a top-level supervisor. Catch the specific exception you can handle.
+- Import at module level. Function-level imports are for breaking cycles, not for "startup speed".

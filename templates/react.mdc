@@ -1,0 +1,16 @@
+---
+description: React best practices — hooks, effects, server components
+globs: **/*.{tsx,jsx}
+alwaysApply: false
+---
+
+# React
+
+- Do NOT use `useEffect` for data fetching. Prefer server components (Next.js App Router), React Query, SWR, or a route loader.
+- `useEffect` is a synchronization primitive, not a lifecycle hook. If you're reaching for it to "run something on mount", pause and ask if a derived value or an event handler works instead.
+- Never derive state from props with `useState` + `useEffect`. Compute during render or use `useMemo`.
+- Keep components pure. Side effects go in event handlers, effects, or server actions.
+- Prefer composition over `useContext` for prop drilling of 2-3 levels. Reach for context only when a value is truly global (theme, auth, i18n).
+- Do not memoize everything. `useMemo`/`useCallback` are for referential stability into memoized children — not perf snake oil.
+- Keys must be stable and unique. Never use array index as key for reorderable lists.
+- Split components at the seam where props change together. If you're passing `user` into 6 layers, split by feature, not by size.

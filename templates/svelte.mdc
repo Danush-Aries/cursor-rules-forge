@@ -1,0 +1,16 @@
+---
+description: Svelte / SvelteKit conventions
+globs: **/*.svelte
+alwaysApply: false
+---
+
+# Svelte / SvelteKit
+
+- Use runes (`$state`, `$derived`, `$effect`) in Svelte 5. Don't mix with legacy stores unless bridging.
+- `$effect` is for side effects that cross the reactive graph (DOM, network). Not for derived values — use `$derived`.
+- Load data in `+page.server.ts` (`load`) — not in `onMount`. SSR + streaming works only when data is declared, not fetched imperatively.
+- Form actions handle mutations. Do not build ad-hoc `POST /api/*` endpoints for form submissions.
+- Server-only code lives in `$lib/server/`. Vite will refuse to bundle it into the client — that's the point.
+- Prefer TypeScript in `<script lang="ts">`. Type the `$props()` rune explicitly.
+- Global state: `$state` in a `.svelte.ts` module, imported where needed. Avoid legacy stores for new code.
+- Use `use:` actions for imperative DOM logic (autofocus, click-outside, tooltips). Don't reach for `bind:this` + effects if an action fits.

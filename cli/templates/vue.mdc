@@ -1,0 +1,17 @@
+---
+description: Vue 3 Composition API conventions
+globs: **/*.vue
+alwaysApply: false
+---
+
+# Vue 3
+
+- Composition API + `<script setup>` for all new components.
+- `ref` for primitives, `reactive` for objects — but prefer `ref` everywhere for consistency. Reactivity is easier to reason about with one primitive.
+- Do not destructure a `reactive()` object outside a `toRefs()` call; you'll lose reactivity.
+- Composables (`useX`) are the Vue equivalent of hooks. Keep them pure, no side effects at import.
+- Provide/inject is context. Use it for truly global values (theme, i18n), not to skip 2 levels of props.
+- `defineProps` + `withDefaults` with TS. No PropTypes-style runtime objects.
+- Emit events via `defineEmits`. Never mutate a prop from a child.
+- Pinia > Vuex. Do not add Vuex to a new project.
+- Template refs are typed via `ref<InstanceType<typeof MyComponent> | null>(null)`.

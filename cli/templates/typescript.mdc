@@ -1,0 +1,17 @@
+---
+description: TypeScript strictness and idioms
+globs: **/*.{ts,tsx}
+alwaysApply: true
+---
+
+# TypeScript
+
+- No `any`. If you're tempted, use `unknown` and narrow.
+- Prefer `type` over `interface` for unions, intersections, and mapped types. Use `interface` only when you specifically need declaration merging.
+- Strict null checks are on. Handle `undefined` at the boundary — don't let it leak into business logic.
+- Use `satisfies` when you want to constrain a value's shape without widening its inferred type.
+- Function signatures: prefer named object arguments (`fn({ a, b })`) once you hit 3+ params. Booleans as positional args are a lie waiting to happen.
+- No enums. Use `as const` object literals or string union types.
+- Do not annotate what the compiler can infer. `const x: number = 1` is noise; `const x = 1` is the same thing.
+- Use discriminated unions for state machines (`{ status: "loading" } | { status: "ok"; data: T }`). Do not use nullable data + nullable error.
+- Never `throw` plain strings. Throw `Error` (or a subclass) so stack traces survive.

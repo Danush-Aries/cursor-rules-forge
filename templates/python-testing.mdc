@@ -1,0 +1,17 @@
+---
+description: pytest patterns and test hygiene
+globs: **/{test_*,*_test}.py
+alwaysApply: false
+---
+
+# Python testing (pytest)
+
+- No side effects at import time in test modules. If a test file writes to disk, opens a socket, or mutates globals just from being imported, that's a bug.
+- Prefer fixtures over module-level globals. Fixtures scope cleanly and tear down.
+- Use `tmp_path` (built-in) for anything filesystem. Never write to the repo tree during tests.
+- Parametrize instead of loops-inside-a-test. `@pytest.mark.parametrize` gives you one failure per case, not one aggregate failure.
+- One assert per behavior, not one assert per test. Related asserts stay together.
+- Mock at the boundary you own. Don't mock `requests.get`; mock your `client.fetch_user` wrapper.
+- Never `time.sleep()` in tests to "wait for" something. Use fakes, monkeypatch time, or event-driven waits.
+- Name tests after the behavior, not the function: `test_returns_empty_list_when_user_has_no_orders`, not `test_get_orders_1`.
+- No test should depend on execution order. If it does, it's not a test — it's a script.

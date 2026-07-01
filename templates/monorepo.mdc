@@ -1,0 +1,17 @@
+---
+description: Monorepo hygiene — turbo, nx, pnpm workspaces
+globs: **/package.json
+alwaysApply: false
+---
+
+# Monorepo
+
+- Each package owns its own `package.json`. Dependencies belong to the package that uses them, not the root.
+- The root `package.json` holds only: workspace config, dev tooling (turbo, prettier, husky), and shared scripts.
+- No cross-package `../../other-package/src/...` imports. Import from the package's public entry point (`@scope/pkg`).
+- `turbo.json` pipeline: every task declares its `dependsOn` and its `outputs`. A task with no outputs won't get cached — that's usually a mistake.
+- Use `internal packages` for shared code. Do not publish everything.
+- Version everything together (fixed) OR use changesets (independent). Pick one; don't mix.
+- `tsconfig.json` extends from a shared base at the root. Don't re-declare compiler options in every package.
+- No global state or globals-through-import-side-effects across packages. Boundaries exist for a reason.
+- CI runs `turbo run build test lint` from the root. Never `cd packages/foo && npm test` in CI.

@@ -1,0 +1,17 @@
+---
+description: JS/TS testing patterns (vitest, jest, playwright)
+globs: **/*.{test,spec}.{ts,tsx,js,jsx}
+alwaysApply: false
+---
+
+# Node/TS testing
+
+- Prefer `vitest` over `jest` for new TS projects — same API, ~10x faster, native ESM.
+- No shared mutable state across test files. Each test file must be runnable in isolation and in parallel.
+- Mock at the module boundary, not at the syscall. `vi.mock("./api")` beats `vi.spyOn(fetch)`.
+- Use `describe` blocks sparingly. Tests should read as flat, self-describing sentences.
+- Playwright: use `test.step()` to break long flows into named phases. Test failures point straight at the phase.
+- No implicit waits (`page.waitForTimeout(500)`). Use locator auto-waiting or explicit `expect(locator).toBeVisible()`.
+- Snapshot tests are a smell 90% of the time. Assert on the meaningful shape, not the whole DOM.
+- Every `expect()` in an async test needs `await` if the matcher is async. `await expect(page).toHaveURL(...)`.
+- Do not test third-party libraries. Test YOUR usage of them.

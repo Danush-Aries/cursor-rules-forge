@@ -1,0 +1,16 @@
+---
+description: Next.js App Router conventions
+globs: app/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Next.js (App Router)
+
+- Default to server components. Add `"use client"` only when you actually need state, effects, or browser APIs.
+- Fetch on the server in server components with `await fetch(..., { next: { revalidate: N } })`. Do NOT fetch in a client component with `useEffect`.
+- Server Actions replace most `POST /api/*` endpoints. Reach for a route handler only when you need webhook receivers, streaming, or non-form clients.
+- Colocate route-specific components in `app/<route>/_components/`. Shared components live in `components/`.
+- Use `<Link>` for internal navigation. Never `window.location.href` for in-app routes.
+- Metadata goes in `generateMetadata` or the exported `metadata` const. Not in `<head>`.
+- Loading + error UI live next to the route: `loading.tsx`, `error.tsx`, `not-found.tsx`.
+- Do not import server-only code into client components. Mark server modules with `import "server-only"` at the top.
